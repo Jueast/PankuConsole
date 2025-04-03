@@ -3,6 +3,8 @@ class_name PankuLynxWindow extends ColorRect
 #Do not connect the button node directly, use these signals to detect click event.
 signal title_btn_clicked
 signal window_closed
+signal window_hide
+signal window_show
 
 const lynx_window_shader_material:ShaderMaterial = preload("./lynx_window_shader_material.tres")
 const OS_WINDOW_MARKER = "PankuOSWindow"
@@ -143,11 +145,13 @@ func show_window():
 	move_to_front()
 	modulate.a = 0.0
 	create_tween().tween_property(self, "modulate:a", 1.0, 0.2)
+	window_show.emit()
 
 func hide_window():
 	if _os_window and _os_window.visible:
 		_os_window.close_requested.emit()
 	hide()
+	window_hide.emit()
 
 func toggle_window_visibility():
 	if _os_window.visible or visible:
@@ -201,6 +205,7 @@ func _ready():
 	)
 	_close_btn.pressed.connect(
 		func():
+			hide_window()
 			window_closed.emit()
 			if queue_free_on_close:
 				queue_free()
@@ -255,6 +260,7 @@ func _input(e):
 				if f and is_ancestor_of(f):
 					f.release_focus()
 		if e is InputEventKey and e.keycode == KEY_ESCAPE and e.pressed and get_global_rect().has_point(get_global_mouse_position()):
+			hide_window()
 			window_closed.emit()
 			if queue_free_on_close:
 				queue_free()

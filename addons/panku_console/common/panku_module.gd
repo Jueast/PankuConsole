@@ -23,6 +23,10 @@ func quit_module():
 func update_module(delta:float):
 	pass
 
+# 'virtual' function to implement saving config
+func save_module():
+	pass
+
 func save_module_data(key:String, value:Variant):
 	var cfg:Dictionary = PankuConfig.get_config()
 	var module_name:String = get_module_name()
@@ -72,7 +76,8 @@ func _save_window_geometry(window:PankuLynxWindow):
 func add_auto_save_hook(window: PankuLynxWindow) -> void:
 	# Here some global settings check can be implemented,
 	# if we decide to make "save on close" feature optional
-	window.window_closed.connect(_save_window_geometry.bind(window))
+	window.window_hide.connect(save_window_data.bind(window))
+	window.window_show.connect(save_window_data.bind(window))
 
 
 func get_module_env() -> RefCounted:

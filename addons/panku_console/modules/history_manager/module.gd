@@ -18,9 +18,5 @@ func init_module():
 	window.set_window_title_text("History Manager")
 	load_window_data(window)
 
-func quit_module():
-	super.quit_module()
-	save_window_data(window)
-
 func open_window():
 	window.show_window()

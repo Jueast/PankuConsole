@@ -50,6 +50,8 @@ func init_module():
 			output_overlay.text = bbcode
 	)
 
+	logger_ui.tags_updated.connect(save_module)
+
 	core.interactive_shell_visibility_changed.connect(
 		func(v:bool):
 			if output_overlay_display_mode == ScreenOverlayDisplayMode.ShowIfShellVisible:
@@ -66,11 +68,9 @@ func init_module():
 	get_module_opt().show_timestamp = load_module_data("show_timestamp", true)
 	logger_ui.load_data(load_module_data("logger_tags", ["[error]", "[warning]"]))
 
-func quit_module():
-	super.quit_module()
+func save_module():
 	# properties defined in opt.gd will be automatically saved as soon as the value is changed
 	# we only need to manually save properties outside opt.gd
-	save_window_data(window)
 	save_module_data("logger_tags", logger_ui.get_data())
 
 func open_window():

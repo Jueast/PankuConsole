@@ -4,6 +4,9 @@ var _modules:Array[PankuModule]
 var _modules_table:Dictionary
 var _core:PankuConsole
 
+const AUTO_SAVE_INTERVAL = 5.0
+var _auto_save_timer:SceneTreeTimer = null
+
 func init_manager(_core:PankuConsole, _modules:Array[PankuModule]):
 	self._modules = _modules
 	self._core = _core
@@ -48,7 +51,21 @@ func get_module_option_objects():
 			objects.append(module._opt)
 	return objects
 
+func save_modules():
+	for _m in _modules:
+		var module:PankuModule = _m
+		module.save_module()
+
+
 func quit_modules():
 	for _m in _modules:
 		var module:PankuModule = _m
 		module.quit_module()
+
+func start_auto_save_timer():
+	if _auto_save_timer != null:
+		_auto_save_timer.stop()
+		_auto_save_timer.queue_free()
+
+	_auto_save_timer = _core.get_tree().create_timer(AUTO_SAVE_INTERVAL)
+	_auto_save_timer.timeout.connect(save_modules)

@@ -1,5 +1,6 @@
 extends VBoxContainer
 
+signal groups_updated
 const MonitorGroup:GDScript = preload("./monitor_group_ui.gd")
 const group_prefab:PackedScene = preload("./monitor_group_ui.tscn")
 
@@ -33,6 +34,10 @@ func add_group() -> MonitorGroup:
 	group_ui.group_move_down.connect(
 		func():
 			groups_container.move_child(group_ui, group_ui.get_index() + 1)
+	)
+	group_ui.group_updated.connect(
+		func():
+			groups_updated.emit()
 	)
 	return group_ui
 

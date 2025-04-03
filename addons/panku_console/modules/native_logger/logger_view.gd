@@ -1,6 +1,7 @@
 extends Control
 
 signal content_updated(bbcode:String)
+signal tags_updated()
 
 var console:PankuConsole
 var _module:PankuModule
@@ -79,6 +80,7 @@ func add_tag(filter_string:String):
 			if tags_container.get_child_count() == 1:
 				tags_container2.hide()
 			tag.queue_free()
+			tags_updated.emit()
 	)
 	#special treatment
 	if filter_string == "[warning]":
@@ -89,6 +91,7 @@ func add_tag(filter_string:String):
 		tag.self_modulate = Color("#d91f11")
 	
 	tags_container.add_child(tag)
+	tags_updated.emit()
 	tags_container2.show()
 
 func update_view():

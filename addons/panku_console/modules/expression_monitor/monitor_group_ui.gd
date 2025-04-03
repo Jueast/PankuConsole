@@ -1,5 +1,6 @@
 extends VBoxContainer
 
+signal group_updated
 signal group_move_up
 signal group_move_down
 
@@ -49,12 +50,14 @@ func _ready():
 		func(button_pressed:bool):
 			exp_body_container.visible = button_pressed
 			group_toggle_button.icon = collapse_icon if button_pressed else expand_icon
+			group_updated.emit()
 	)
 
 	add_exp_button.pressed.connect(
 		func():
 			var exp_item = exp_item_ui_prefab.instantiate()
 			exp_container.add_child(exp_item)
+			group_updated.emit()
 	)
 	
 	state_control_button.button.toggle_mode = true
@@ -62,6 +65,7 @@ func _ready():
 	state_control_button.button.toggled.connect(
 		func(button_pressed:bool):
 			state_control_button.icon = pause_icon if button_pressed else play_icon
+			group_updated.emit()
 	)
 
 	rename_button.pressed.connect(
@@ -69,12 +73,14 @@ func _ready():
 			edit_ui_group.map(func(item): item.show())
 			normal_ui_group.map(func(item): item.hide())
 			rename_line_edit.text = group_toggle_button.text
+			group_updated.emit()
 	)
 	
 	cancel_rename_button.pressed.connect(
 		func():
 			edit_ui_group.map(func(item): item.hide())
 			normal_ui_group.map(func(item): item.show())
+			group_updated.emit()
 	)
 	
 	confirm_rename_button.pressed.connect(
@@ -82,16 +88,19 @@ func _ready():
 			edit_ui_group.map(func(item): item.hide())
 			normal_ui_group.map(func(item): item.show())
 			group_toggle_button.text = rename_line_edit.text
+			group_updated.emit()
 	)
 	
 	move_up_button.pressed.connect(
 		func():
 			group_move_up.emit()
+			group_updated.emit()
 	)
 	
 	move_down_button.pressed.connect(
 		func():
 			group_move_down.emit()
+			group_updated.emit()
 	)
 	
 	remove_this_group_button.pressed.connect(queue_free)

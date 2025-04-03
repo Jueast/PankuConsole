@@ -83,4 +83,5 @@ func _ready():
 func _notification(what):
 	# quit event
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
+		module_manager.save_modules()
 		module_manager.quit_modules()

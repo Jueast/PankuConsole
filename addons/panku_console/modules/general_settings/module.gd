@@ -61,8 +61,3 @@ func init_module():
 	get_module_opt().enable_os_window = load_module_data("enable_os_window", false)
 	get_module_opt().os_window_bg_color = load_module_data("os_window_bg_color", Color(0, 0, 0, 0))
 	get_module_opt().global_font_size = load_module_data("global_font_size", int(16 * get_auto_display_scale()))
-
-func quit_module():
-	super.quit_module()
-	if window:
-		save_window_data(window)

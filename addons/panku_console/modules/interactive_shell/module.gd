@@ -95,9 +95,7 @@ func init_module():
 
 	_input_histories = load_module_data("histories", [])
 
-func quit_module():
-	super.quit_module()
-	save_window_data(window)
+func save_module():
 	save_module_data("gui_mode", gui_mode)
 	save_module_data("histories", _input_histories)
 	save_module_data("show_side_menu", _show_side_menu)
@@ -134,12 +132,14 @@ func open_window():
 		gui_mode = InputMode.Window
 		simple_launcher.hide()
 		window.show_window()
+		save_module_data("gui_mode", gui_mode)
 
 func open_launcher():
 	if gui_mode == InputMode.Window:
 		gui_mode = InputMode.Launcher
 		window.hide_window()
 		simple_launcher.show()
+		save_module_data("gui_mode", gui_mode)
 	elif gui_mode == InputMode.Launcher:
 		if not simple_launcher.visible:
 			simple_launcher.show()
@@ -169,3 +169,4 @@ func add_history(s:String) -> void:
 	_input_histories.append(s)
 	if _input_histories.size() > MAX_HISTORY:
 		_input_histories.remove_at(0)
+	save_module_data("histories", _input_histories)

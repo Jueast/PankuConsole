@@ -10,10 +10,12 @@ func init_module():
 		"group_name": "default group",
 		"expressions": []
 	}]))
+	monitor.monitor_groups_ui.groups_updated.connect(
+		func():
+			save_module_data("monitor_data", monitor.monitor_groups_ui.get_persistent_data())
+	)
 
-func quit_module():
-	super.quit_module()
-	save_window_data(monitor_window)
+func save_module():
 	save_module_data("monitor_data", monitor.monitor_groups_ui.get_persistent_data())
 
 func init_monitor_window():
