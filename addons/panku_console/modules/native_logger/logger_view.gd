@@ -91,7 +91,6 @@ func add_tag(filter_string:String):
 		tag.self_modulate = Color("#d91f11")
 	
 	tags_container.add_child(tag)
-	tags_updated.emit()
 	tags_container2.show()
 
 func update_view():
@@ -146,6 +145,7 @@ func _ready():
 	pin_btn.pressed.connect(
 		func():
 			add_tag(search_box.text)
+			tags_updated.emit()
 			search_box.clear()
 	)
 	cls_btn.pressed.connect(clear_all)
