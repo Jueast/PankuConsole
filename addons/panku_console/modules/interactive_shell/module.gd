@@ -98,7 +98,6 @@ func init_module():
 func save_module():
 	save_module_data("gui_mode", gui_mode)
 	save_module_data("histories", _input_histories)
-	save_module_data("show_side_menu", _show_side_menu)
 
 func update_gui_state():
 	var is_gui_open = window.visible or simple_launcher.visible
